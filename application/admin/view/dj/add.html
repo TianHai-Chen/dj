@@ -1,0 +1,144 @@
+<form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-name" class="form-control" name="row[name]" type="text">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Cover')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-cover" class="form-control" size="50" name="row[cover]" type="text">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="faupload-cover" class="btn btn-danger faupload" data-input-id="c-cover" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp,image/webp" data-multiple="false" data-preview-id="p-cover"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-cover" class="btn btn-primary fachoose" data-input-id="c-cover" data-mimetype="image/*" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-cover"></span>
+            </div>
+            <ul class="row list-inline faupload-preview" id="p-cover"></ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">类型:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-type" data-rule="required" data-source="is/index" class="form-control selectpage" name="row[type]" type="text" value="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">推荐:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-is_recommend" data-rule="required" data-source="is/index" class="form-control selectpage" name="row[is_recommend]" type="text" value="">
+        </div>
+    </div>
+    <!-- <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Content')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-content" class="form-control editor" rows="5" name="row[content]" cols="50"></textarea>
+        </div>
+    </div> -->
+    <!-- <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Content')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="剧集名">
+                    </div>
+                    <div class="col-sm-8">
+                        <input id="c-content" class="form-control" name="row[content]" type="text">
+                    </div>
+                </div>
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="plupload-content" class="btn btn-danger plupload" data-input-id="c-content" data-mimetype="mp4,mp3,avi,flv,wmv" data-multiple="false" data-maxsize="50M"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-content" class="btn btn-primary fachoose" data-input-id="c-content" data-mimetype="mp4,mp3,avi,flv,wmv" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-content"></span>
+            </div>
+        </div>
+    </div> -->
+    <style>
+        .row-no-gutters {
+            margin-right: 0;
+            margin-left: 0;
+        }
+        
+        .row-no-gutters > [class*="col-"] {
+            padding-right: 0;
+            padding-left: 0;
+        }
+    </style>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">视频播放地址:</label>
+        <div class="col-xs-12 col-sm-8 content-container">
+            <!-- 初始的input-group容器 -->
+            <div class="input-group item-content">
+                <div class="row row-no-gutters">
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="剧集名">
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="row[content][]" placeholder="内容">
+                    </div>
+                </div>
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="plupload-content" class="btn btn-danger plupload" data-input-id="c-content" data-mimetype="mp4,mp3,avi,flv,wmv" data-multiple="false" data-maxsize="50M"><i class="fa fa-upload"></i> {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-content" class="btn btn-primary fachoose" data-input-id="c-content" data-mimetype="mp4,mp3,avi,flv,wmv" data-multiple="false"><i class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <!-- 其他按钮和消息框 -->
+                <div class="input-group-btn">
+                    <button type="button" class="btn btn-default remove-content-item"><i class="fa fa-minus"></i> </button>
+                </div>
+            </div>
+            <!-- 加按钮 -->
+            <button type="button" class="btn btn-default add-content-item btn-block"><i class="fa fa-plus"></i> 添加</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 添加新项的函数
+            $('.add-content-item').click(function() {
+                var newItem = $('.item-content').first().clone(); // 克隆第一个item作为新项
+                newItem.find('input[type="text"]').val(''); // 清空输入字段
+                newItem.find('.remove-content-item').show(); // 确保删除按钮是可见的
+                $('.content-container').append(newItem); // 将新项添加到容器中
+            });
+        
+            // 移除项的函数（绑定到每个.remove-item按钮上）
+            $('.content-container').on('click', '.remove-content-item', function() {
+                var itemToRemove = $(this).closest('.item-content');
+                // 检查是否是要保留的第一个元素
+                if (!itemToRemove.is($('.item-content').first())) {
+                    itemToRemove.remove();// 移除包含该按钮的.item容器
+                }
+            });
+        });
+    </script>
+    
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Collect')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-collect" data-rule="required" class="form-control" name="row[collect]" type="text" value="0">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Display')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-display" data-rule="required" class="form-control" name="row[display]" type="number">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Sort')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-sort" data-rule="required" class="form-control" name="row[sort]" type="number" value="0">
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+        </div>
+    </div>
+</form>
